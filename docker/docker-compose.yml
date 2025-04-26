@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"  # Kafka client connections (producer/consumer)
+      - "9093:9093"  # Kafka controller internal communication
+    environment:
+      KAFKA_KRAFT_MODE: "true"  # Enable KRaft mode
+      KAFKA_PROCESS_ROLES: controller,broker  # This instance acts as both controller and broker
+      KAFKA_NODE_ID: 1  # Unique ID for this broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"  # Tell Kafka who the controller voter is (itself)
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"  # Auto create topics if not present
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1  # Only 1 replica (single broker setup)
+      KAFKA_LOG_RETENTION_HOURS: 168  # 7 days log retention
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0  # No delay in group rebalance
+      CLUSTER_ID: "Mk3OEYBSD34fcwNTJENDM2Qk"  # Unique cluster ID
+    volumes:
+      - ./kafka-data:/var/lib/kafka/data  # Persist Kafka logs
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db  # Persist MongoDB data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: insights
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data  # Persist Postgres data
+    restart: unless-stopped
+
+networks:
+  default:
+    name: stream-network
