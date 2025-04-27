@@ -14,7 +14,7 @@ DEVICE_IDS = ['dev01', 'dev02', 'dev03']
 
 while True:
     metric = {
-        'device_id': random.choic(DEVICE_IDS),
+        'device_id': random.choice(DEVICE_IDS),
         'timestamp': time.time(),
         'iops': random.randint(100, 10000),
         'latency': round(random.uniform(1.0, 15.0), 2),
