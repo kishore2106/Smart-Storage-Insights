@@ -34,6 +34,7 @@ POSTGRES_HOST = 'localhost'
 POSTGRES_DB = 'storageinsights'
 POSTGRES_USER = 'ssip'
 POSTGRES_PASSWORD = 'ssip123'
+POSTGRES_PORT = "5434"
 
 # Create a queue to store Kafka messages
 kafka_messages = queue.Queue(maxsize=100)
@@ -78,9 +79,10 @@ def get_postgres_conn():
         # Try using the parameters from your Docker configuration
         conn = psycopg2.connect(
             host=POSTGRES_HOST,
+            port=POSTGRES_PORT,
             database=POSTGRES_DB,  # 'storageinsights' based on your Docker setup
             user=POSTGRES_USER,    # 'ssip' based on your Docker setup
-            password=POSTGRES_PASSWORD  # 'ssip123' based on your Docker setup
+            password=POSTGRES_PASSWORD,  # 'ssip123' based on your Docker setup
         )
         return conn
     except psycopg2.OperationalError as e:
@@ -134,8 +136,8 @@ def initialize_postgres_tables():
             """)
             
             conn.commit()
-            cursor.close()
-            conn.close()
+            # cursor.close()
+            # conn.close()
             
             st.sidebar.success("PostgreSQL tables initialized successfully!")
         except Exception as e:
@@ -171,6 +173,26 @@ def get_insights(hours=24):
         if not conn:
             return pd.DataFrame()
             
+        # query = """
+        # SELECT 
+        #     device_id, 
+        #     period_start, 
+        #     period_end, 
+        #     avg_iops, 
+        #     avg_latency, 
+        #     avg_capacity_used,
+        #     max_iops,
+        #     max_latency,
+        #     max_capacity_used,
+        #     min_iops,
+        #     min_latency,
+        #     min_capacity_used,
+        #     metrics_count,
+        #     alerts
+        # FROM device_insights
+        # WHERE period_end >= NOW() - INTERVAL %s HOUR
+        # ORDER BY period_end DESC
+        # """
         query = """
         SELECT 
             device_id, 
@@ -188,12 +210,12 @@ def get_insights(hours=24):
             metrics_count,
             alerts
         FROM device_insights
-        WHERE period_end >= NOW() - INTERVAL %s HOUR
+        WHERE period_end >= NOW() - INTERVAL '%s hours'
         ORDER BY period_end DESC
         """
         
         df = pd.read_sql_query(query, conn, params=(hours,))
-        conn.close()
+        # conn.close()
         return df
     except Exception as e:
         st.error(f"Error fetching insights from PostgreSQL: {e}")
@@ -552,13 +574,13 @@ with tab3:
 
 # Add refresh button for manually refreshing all data
 if st.button('Refresh All Data'):
-    st.experimental_rerun()
+    st.rerun()
 
 # Add auto-refresh checkbox
 auto_refresh = st.sidebar.checkbox("Enable auto-refresh (5 seconds)", value=False)
 if auto_refresh:
     time.sleep(5)
-    st.experimental_rerun()
+    st.rerun()
 
 # Footer
 st.sidebar.title("SSIP Dashboard")
@@ -608,8 +630,8 @@ with st.sidebar.expander("System Status"):
         if conn:
             cursor = conn.cursor()
             cursor.execute("SELECT 1")
-            cursor.close()
-            conn.close()
+            # cursor.close()
+            # conn.close()
             postgres_status = "✅ Connected"
         else:
             postgres_status = "❌ Not Connected"

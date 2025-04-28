@@ -54,7 +54,8 @@ def save_insights_to_postgres(insights: List[Dict]):
             host="localhost",
             database="storageinsights",
             user=POSTGRES_USER,
-            password=POSTGRES_PASSWORD
+            password=POSTGRES_PASSWORD,
+            port=5434
         )
         cursor = conn.cursor()
         
@@ -119,6 +120,7 @@ def create_postgres_tables_if_not_exist():
             host="localhost",
             database="storageinsights",
             user=POSTGRES_USER,
+            port=5434,
             password=POSTGRES_PASSWORD
         )
         cursor = conn.cursor()

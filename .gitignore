@@ -2,3 +2,4 @@
 storage-consumer
 *.pyc
 checkpoint
+docker_script.txt
