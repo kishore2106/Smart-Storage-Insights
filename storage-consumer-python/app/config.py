@@ -7,8 +7,6 @@ KAFKA_TOPIC = 'storage_metrics'             # Kafka topic you want to consume
 KAFKA_GROUP_ID = 'ssip-group'                # Kafka consumer group ID
 
 # MongoDB Configuration
-# MONGO_URI = 'mongodb://localhost:27017'          # CONNECT INSIDE NETWORK to MongoDB
-MONGO_URI = 'mongodb://root:example@localhost:27017/ssip?authSource=admin'
-# MONGO_URI = 'mongodb://root:example@mongo:27017/ssip?authSource=admin'
+MONGO_URI = 'mongodb://localhost:27017'          # CONNECT INSIDE NETWORK to MongoDB
 MONGO_DB = 'ssip'                            # MongoDB Database name
 MONGO_COLLECTION = 'storage_metrics'         # Collection name
