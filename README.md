@@ -223,11 +223,14 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Below are screenshots demonstrating the key features and functionality of the Smart Storage Insights Platform:
 
 ### Dashboard Overview
+![Dashboard Overview](docs/images/dashboard-overview1.png)
+*The main dashboard showing real-time storage metrics across systems*
+
+### Live Metrics
 ![Dashboard Overview](docs/images/dashboard-overview.png)
 *The main dashboard showing real-time storage metrics across systems*
 
-### Metrics Visualization
-####
+### Historical Data
 ![Average IOPS by Hour](docs/images/average_iops_by_hour.png)
 *Interactive charts showing storage usage trends over time*
 
@@ -235,4 +238,11 @@ Below are screenshots demonstrating the key features and functionality of the Sm
 *Interactive charts showing storage usage trends over time*
 
 ![Average Capacity used by Hour](docs/images/average_capacity_used_by_hour.png)
+*Interactive charts showing storage usage trends over time*
+
+### Storage Insights
+![IOPS and Latency Over Time](docs/images/iops_and_latency_over_time.png)
+*Interactive charts showing storage usage trends over time*
+
+![Average Capacity used Over Time](docs/images/iops_and_latency_over_time.png)
 *Interactive charts showing storage usage trends over time*
