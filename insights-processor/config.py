@@ -6,7 +6,7 @@ MONGO_DB = "ssip"
 MONGO_COLLECTION = "storage_metrics"
 
 # PostgreSQL Configuration
-POSTGRES_URI = "jdbc:postgresql://localhost:5432/storageinsights"
+POSTGRES_URI = "jdbc:postgresql://localhost:5434/storageinsights"
 POSTGRES_USER = "ssip"
 POSTGRES_PASSWORD = "ssip123"
 POSTGRES_DRIVER = "org.postgresql.Driver"

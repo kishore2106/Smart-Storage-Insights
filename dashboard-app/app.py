@@ -25,16 +25,23 @@ st.set_page_config(
 )
 
 # Configuration
-KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
 KAFKA_TOPIC = 'storage_metrics'
-MONGO_URI = 'mongodb://localhost:27017'
 MONGO_DB = 'ssip'
 MONGO_COLLECTION = 'storage_metrics'
-POSTGRES_HOST = 'localhost'
 POSTGRES_DB = 'storageinsights'
 POSTGRES_USER = 'ssip'
 POSTGRES_PASSWORD = 'ssip123'
-POSTGRES_PORT = "5434"
+POSTGRES_PORT = "5432"
+
+# localhost
+KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
+MONGO_URI = 'mongodb://localhost:27017'
+POSTGRES_HOST = 'localhost'
+
+# Docker
+# KAFKA_BOOTSTRAP_SERVERS = 'kafka:29092'
+# MONGO_URI = 'mongodb://mongodb:27017'
+# POSTGRES_HOST = 'postgres'
 
 # Create a queue to store Kafka messages
 kafka_messages = queue.Queue(maxsize=100)
